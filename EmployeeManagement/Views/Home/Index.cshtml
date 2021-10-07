@@ -1,0 +1,71 @@
+﻿@model IEnumerable<EmployeeManagement.Models.Employee>
+
+
+
+<h2>Employee Management</h2>
+
+
+
+<div>
+    <a href="@Url.Content("~/Home/Create")" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"> Add New</span></a>
+</div>
+<br />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+                            Employee Id
+                        </th>
+                        <th>
+                            @Html.ActionLink("Name","Index",new { sortOrder = ViewBag.NameSortParm })
+                        </th>
+                        <th>
+                            @Html.ActionLink("Position", "Index", new { sortOrder = ViewBag.PositionSortParm })
+                        </th>
+                        <th>
+                            @Html.ActionLink("Salary", "Index", new { sortOrder = ViewBag.SalarySortParm })
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Position
+                            </td>
+                            <td>
+                                @item.Salary $
+                            </td>
+                            <td>
+                                <a href="@Url.Content("~/Home/Details?id=")@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-search"></span></a>
+                                <a href="@Url.Content("~/Home/Edit?id=")@item.Id" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a href="@Url.Content("~/Home/Delete?id=")@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div><!--table resposive-->
+    </div><!--col nested-->
+    <div class="col-lg-8">
+        <div id="morris-bar-chart"></div>
+    </div><!--col nested-->
+</div>
+
+
