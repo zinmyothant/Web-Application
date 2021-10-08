@@ -6,6 +6,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using PagedList;
+using System.Data;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace EmployeeManagement.Controllers
 {
@@ -13,12 +17,28 @@ namespace EmployeeManagement.Controllers
     public class HomeController : Controller
     {
         private readonly EmployeeDbContext _context = new EmployeeDbContext();
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder,string searchString , string currentFilter , int ? page)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "Name";
             ViewBag.PositionSortParm = sortOrder == "Position" ? "position_desc" : "Position";
             ViewBag.SalarySortParm = sortOrder == "Salary" ? "salary_desc" : "Salary";
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+                
+            }
+            ViewBag.CurrentFilter = searchString;
             var emp = from e in _context.Employees select e;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                emp = emp.Where(e => e.Name.Contains(searchString) ||e.Position.Contains(searchString));
+            }
+            
             switch (sortOrder)
             {
                 case "name_desc":
@@ -40,8 +60,9 @@ namespace EmployeeManagement.Controllers
                     emp = emp.OrderBy(e => e.Name);
                     break;
             }
-           
-            return View(emp.ToList());
+            int pageSize = 4;
+            int pageNumber = (page??1);
+            return View(emp.ToPagedList(pageNumber,pageSize));
         }
         public ActionResult Create()
         {
@@ -107,6 +128,48 @@ namespace EmployeeManagement.Controllers
                 return RedirectToAction("Index");
             }
             return View(emp);
+        }
+        public ActionResult Detail(int ? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Employee emp = _context.Employees.Find(id);
+            if (emp == null)
+            {
+                return HttpNotFound();
+            }
+            return View(emp);
+        }
+        [HttpPost]
+        public FileResult Export()
+        {
+           
+            DataTable dt = new DataTable("Grid");
+            //header
+            dt.Columns.AddRange(new DataColumn[3] {
+                new DataColumn("Name"),
+                new DataColumn("Position"),
+                new DataColumn("Salary")});
+          //query data from database
+            var emps = from emp in _context.Employees.ToList() select emp;
+            //add data to datatable
+            foreach (var emp in emps)
+            {
+                dt.Rows.Add(emp.Name, emp.Position, emp.Salary);
+            }
+            using (XLWorkbook wb=new XLWorkbook())
+            {
+                //add datatable in to excel
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream=new MemoryStream())
+                {
+                    //save
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats.spreadsheetml.sheet", "Grid.xlsx");
+                }
+            }
         }
         public ActionResult About()
         {
