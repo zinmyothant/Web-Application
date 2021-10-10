@@ -88,6 +88,7 @@ E:\AI Batch 2\Data\EmployeeManagement\EmployeeManagement\bin\System.Web.WebPages
 E:\AI Batch 2\Data\EmployeeManagement\EmployeeManagement\bin\Newtonsoft.Json.xml
 E:\AI Batch 2\Data\EmployeeManagement\EmployeeManagement\bin\Antlr3.Runtime.pdb
 E:\AI Batch 2\Data\EmployeeManagement\EmployeeManagement\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\AI Batch 2\Data\EmployeeManagement\EmployeeManagement\obj\Debug\EmployeeManagement.csproj.AssemblyReference.cache
 E:\AI Batch 2\Data\EmployeeManagement\EmployeeManagement\obj\Debug\EmployeeManagement.Migrations.create.resources
 E:\AI Batch 2\Data\EmployeeManagement\EmployeeManagement\obj\Debug\EmployeeManagement.csproj.GenerateResource.cache
 E:\AI Batch 2\Data\EmployeeManagement\EmployeeManagement\obj\Debug\EmployeeManagement.csproj.CoreCompileInputs.cache

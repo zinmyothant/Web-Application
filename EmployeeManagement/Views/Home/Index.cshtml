@@ -2,7 +2,7 @@
 
 @using PagedList.Mvc;
 
-<h2>Employee Management</h2>
+<h4>Employee List</h4>
 
 
 
@@ -12,13 +12,14 @@
 <br />
 <div class="row">
     <div class="col-lg-12">
-        <div class="form-group pull-right">
-            @using (Html.BeginForm("Export","Home",FormMethod.Post))
-            {
-                <input type="submit" value="Export" class="btn btn-success"/>
-            }
-        </div>
         <div class="table-responsive">
+            <div class="form-group pull-right">
+                @using (Html.BeginForm("Export", "Home", FormMethod.Post))
+                {
+                    <input type="submit" value="Export" class="btn btn-success" />
+                }
+            </div>
+
             <table class="table table-bordered table-hover table-striped">
                 <div>
                     @using (Html.BeginForm("Index", "Home", FormMethod.Get))
@@ -77,10 +78,10 @@
                 </tbody>
 
             </table>
-            
-                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-            
+
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
 
         </div><!--table resposive-->
     </div><!--col nested-->
